@@ -1,6 +1,7 @@
 // ./index.js
 
 const http = require('http');
+const url = require('url');
 const fs = require('fs');
 
 const UserMessages = require('./lang/messages/en/user');
@@ -16,12 +17,15 @@ class Server {
     
     start() {
         const server = http.createServer(function(req, res) {
-            if (req.url === '/' && req.method === 'GET') {
+            const parsedUrl = url.parse(req.url, true);
+            const path = parsedUrl.pathname.replace(/\/+$/,'');
+
+            if (path === '' && req.method === 'GET') {
                 fs.readFile('./index.html', function(err, data) {
                     res.writeHead(200, { 'Content-Type': 'text/html' });
                     res.end(data);
                 }.bind(this));
-            } else if (req.url === '/insert' && req.method === 'POST') {
+            } else if (path === '/insert' && req.method === 'POST') {
                 // Here you would call your SQL functions to check/create table 
             } else {
                 res.writeHead(404, { 'Content-Type': 'text/plain' });
