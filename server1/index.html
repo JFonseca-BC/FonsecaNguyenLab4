@@ -12,22 +12,38 @@
         <div class="section">
             <button id="insertBtn" onclick="insertData()">{{INSERT_BUTTON}}</button>
         </div>
-
         <hr>
-
         <div class="section">
             <h2>{{QUERY_TITLE}}</h2>
             <textarea id="sqlQuery" placeholder="{{QUERY_PLACEHOLDER}}"></textarea>
             <br>
             <button onclick="runQuery()">{{SUBMIT_QUERY_BUTTON}}</button>
         </div>
-
         <div class="section">
             <h3>{{RESPONSE_TITLE}}</h3>
             <pre id="responseArea"></pre>
         </div>
     </div>
 
-    <script src="./js/script.js"></script>
+    <script>
+        const API_URL = "https://fonsecanguyenlab4.onrender.com"; 
+
+        function insertData() {
+            fetch(API_URL + '/insert', { method: 'POST' })
+            .then(res => res.json())
+            .then(data => document.getElementById('responseArea').innerText = JSON.stringify(data, null, 2))
+            .catch(err => document.getElementById('responseArea').innerText = "Error: " + err);
+        }
+
+        function runQuery() {
+            const query = document.getElementById('sqlQuery').value;
+            const encodedQuery = encodeURIComponent(query);
+            
+            fetch(API_URL + '/sql?query=' + encodedQuery, { method: 'GET' })
+            .then(res => res.json())
+            .then(data => document.getElementById('responseArea').innerText = JSON.stringify(data, null, 2))
+            .catch(err => document.getElementById('responseArea').innerText = "Error: " + err);
+        }
+    </script>
 </body>
 </html>
