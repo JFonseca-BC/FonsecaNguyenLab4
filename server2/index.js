@@ -22,6 +22,8 @@ class Server {
         const server = http.createServer(async (req, res) => {
             const parsedUrl = url.parse(req.url, true);
             const path = parsedUrl.pathname.replace(/\/+$/,'');
+
+            console.log(`[REQUEST] Method: ${req.method} | Path: '${path}'`);
             
             this.setCorsHeaders(res);
 
