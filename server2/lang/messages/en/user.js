@@ -1,4 +1,4 @@
-// ./lang/messages/en/user.js
+// ./server2/lang/messages/en/user.js
 
 class UserMessages {
     constructor() {

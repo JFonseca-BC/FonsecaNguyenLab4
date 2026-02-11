@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{{TITLE}}</title>
+    <title>Lab 4 Patient DB</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <div class="container">
-        <h1>{{HEADER}}</h1>
+        <h1 id="header">{{HEADER}}</h1>
 
         <div class="section">
             <button id="insertBtn" onclick="insertData()">{{INSERT_BUTTON}}</button>
         </div>
         <hr>
         <div class="section">
-            <h2>{{QUERY_TITLE}}</h2>
-            <textarea id="sqlQuery" placeholder="{{QUERY_PLACEHOLDER}}"></textarea>
+            <h2 id="queryTitle">{{QUERY_TITLE}}</h2>
+            <textarea id="sqlQuery" placeholder="Loading..."></textarea>
             <br>
-            <button onclick="runQuery()">{{SUBMIT_QUERY_BUTTON}}</button>
+            <button id="submitBtn" onclick="runQuery()">{{SUBMIT_QUERY_BUTTON}}</button>
         </div>
         <div class="section">
-            <h3>{{RESPONSE_TITLE}}</h3>
+            <h3 id="responseTitle">{{RESPONSE_TITLE}}</h3>
             <pre id="responseArea"></pre>
         </div>
     </div>
@@ -28,6 +28,26 @@
     <script>
         const API_URL = "https://fonsecanguyenlab4.onrender.com"; 
 
+        // 1. Fetch Text Definitions on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch(API_URL + '/definitions')
+                .then(res => res.json())
+                .then(data => {
+                    // Update text content elements
+                    document.getElementById('header').innerText = data.header;
+                    document.getElementById('insertBtn').innerText = data.insertButton;
+                    document.getElementById('queryTitle').innerText = data.queryTitle;
+                    document.getElementById('submitBtn').innerText = data.submitQueryButton;
+                    document.getElementById('responseTitle').innerText = data.responseTitle;
+                    
+                    // Update attribute placeholders
+                    document.getElementById('sqlQuery').placeholder = data.queryPlaceholder;
+                    document.title = data.title;
+                })
+                .catch(err => console.error("Error loading definitions:", err));
+        });
+
+        // 2. Button Functions
         function insertData() {
             fetch(API_URL + '/insert', { method: 'POST' })
             .then(res => res.json())

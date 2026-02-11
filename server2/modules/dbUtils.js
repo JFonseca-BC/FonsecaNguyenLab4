@@ -1,4 +1,4 @@
-// ./modules/dbUtils.js
+// ./server2/modules/dbUtils.js
 
 const mysql = require('mysql2/promise');
 
