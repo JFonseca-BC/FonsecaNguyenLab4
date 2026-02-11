@@ -73,8 +73,11 @@ class DbUtils {
             return { success: true, message: "Table checked/created and 4 rows inserted." };
 
         } catch (err) {
-            console.error("Insert Error:", err);
-            return { success: false, error: err.message };
+            console.error("FULL INSERT ERROR:", err); // logs to Render dashboard
+                return { 
+                    success: false, 
+                    error: err.message || err.code || "Unknown Database Error" 
+                };
         } finally {
             if (connection) await connection.end();
         }
@@ -96,8 +99,11 @@ class DbUtils {
             return { success: true, data: rows };
 
         } catch (err) {
-            console.error("Query Error:", err);
-            return { success: false, error: err.message };
+                        console.error("FULL INSERT ERROR:", err); // logs to Render dashboard
+                return { 
+                    success: false, 
+                    error: err.message || err.code || "Unknown Database Error" 
+                };
         } finally {
             if (connection) await connection.end();
         }
